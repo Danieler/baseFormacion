@@ -1,6 +1,9 @@
 import * as L from 'leaflet';
 import { MarkerClusterGroup } from 'leaflet.markercluster';
 
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import 'sweetalert2/src/sweetalert2.scss';
+
 export default class  Map {
 	constructor() {
 		this.map = L.map('map');
@@ -33,14 +36,12 @@ export default class  Map {
 						className:'my-div-icon'
 					})});
 				marker.on('click', this.markerClick.bind(this));
-				marker.myCustomID = Math.floor((Math.random() * 100) + 1);
+				marker.vehicleRef = item.monitoredVehicleJourney.vehicleRef;
 				marker.addTo(mcg);
 			}
 		});
 	}
-
 	markerClick(e) {
-		console.log(e.target.myCustomID);
+		Swal.fire(`Autobus: ${ e.target.vehicleRef }`);
 	}
-
 }
