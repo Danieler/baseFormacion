@@ -4,6 +4,8 @@ import { MarkerClusterGroup } from 'leaflet.markercluster';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import 'sweetalert2/src/sweetalert2.scss';
 
+import  BusService from './busService';
+
 export default class  Map {
 	constructor() {
 		this.map = L.map('map');
@@ -12,6 +14,7 @@ export default class  Map {
 		}).addTo(this.map);
 
 		this.map.setView([61.4956, 23.7713], 11);
+		this.busService = new BusService();
 	}
 	createMarkers() {
 		const mcg = new MarkerClusterGroup().addTo(this.map);
@@ -19,7 +22,7 @@ export default class  Map {
 	}
 
 	paintMarkers(mcg) {
-		fetch('http://data.itsfactory.fi/journeys/api/1/vehicle-activity').then(r => r.json()).then(response => {
+		this.busService.getBuses().then(response => {
 			mcg.clearLayers();
 			for (let item of response.body) {
 				let marker = L.marker([
